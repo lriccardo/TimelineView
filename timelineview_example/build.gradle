@@ -5,6 +5,10 @@ plugins {
 
 android {
     compileSdk 31
+    
+    buildFeatures {
+        viewBinding true
+    }
 
     defaultConfig {
         applicationId "com.lriccardo.timelineview_example"
