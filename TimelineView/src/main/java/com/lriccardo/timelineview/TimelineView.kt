@@ -43,17 +43,17 @@ class TimelineView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                viewType = ViewType.values()[getInteger(R.styleable.TimelineView_tv_view_type, 0)]
+                viewType = ViewType.values()[getInteger(R.styleable.TimelineView_timeline_item_type, 0)]
                 indicatorRadius = getDimensionPixelSize(
-                    R.styleable.TimelineView_tv_indicator_radius,
+                    R.styleable.TimelineView_indicator_radius,
                     24
                 ).toFloat()
                 lineWidth = getDimensionPixelSize(
-                    R.styleable.TimelineView_tv_line_width,
+                    R.styleable.TimelineView_line_width,
                     (indicatorRadius / 1.61).toInt()
                 ).toFloat()
-                indicatorColor = getColor(R.styleable.TimelineView_tv_indicator_color, Color.RED)
-                lineColor = getColor(R.styleable.TimelineView_tv_line_color, Color.RED)
+                indicatorColor = getColor(R.styleable.TimelineView_indicator_color, Color.RED)
+                lineColor = getColor(R.styleable.TimelineView_line_color, Color.RED)
             } finally {
                 recycle()
             }
