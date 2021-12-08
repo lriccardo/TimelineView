@@ -8,5 +8,6 @@
             <enum name="spacer" value="3"/>
         </attr>
         <attr name="tv_indicator_radius" format="dimension"/>
+        <attr name="tv_line_width" format="dimension"/>
     </declare-styleable>
 </resources>

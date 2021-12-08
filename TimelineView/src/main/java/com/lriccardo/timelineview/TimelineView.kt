@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 
 
-class TimelineView@JvmOverloads constructor(
+class TimelineView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -23,6 +23,7 @@ class TimelineView@JvmOverloads constructor(
 
     var viewType = ViewType.FIRST
     var indicatorRadius: Float
+    var lineWidth: Float
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -32,10 +33,18 @@ class TimelineView@JvmOverloads constructor(
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.TimelineView,
-            0, 0).apply {
+            0, 0
+        ).apply {
             try {
                 viewType = ViewType.values()[getInteger(R.styleable.TimelineView_tv_view_type, 0)]
-                indicatorRadius = getDimensionPixelSize(R.styleable.TimelineView_tv_indicator_radius, 30).toFloat()
+                indicatorRadius = getDimensionPixelSize(
+                    R.styleable.TimelineView_tv_indicator_radius,
+                    24
+                ).toFloat()
+                lineWidth = getDimensionPixelSize(
+                    R.styleable.TimelineView_tv_line_width,
+                    (indicatorRadius / 1.61).toInt()
+                ).toFloat()
             } finally {
                 recycle()
             }
@@ -44,57 +53,58 @@ class TimelineView@JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val width = resolveSizeAndState((indicatorRadius*2).toInt(), widthMeasureSpec, 0)
-        val height = resolveSizeAndState((indicatorRadius*2).toInt(), heightMeasureSpec, 0)
+        val width = resolveSizeAndState((indicatorRadius * 2).toInt(), widthMeasureSpec, 0)
+        val height = resolveSizeAndState((indicatorRadius * 2).toInt(), heightMeasureSpec, 0)
         setMeasuredDimension(width, height)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         paint.color = Color.RED
-        var rectLeft = (width / 2)-(indicatorRadius/3)
-        var rectRight = (width / 2)+(indicatorRadius/3)
-        var rectTop = (height/2).toFloat()
+        var rectLeft = (width / 2) - (lineWidth / 2)
+        var rectRight = (width / 2) + (lineWidth / 2)
+        var rectTop = (height / 2).toFloat()
         var rectBottom = height.toFloat()
 
-        var indicatorCenterX = (width/2).toFloat()
-        var indicatorCenterY = (height/2).toFloat()
+        var indicatorCenterX = (width / 2).toFloat()
+        var indicatorCenterY = (height / 2).toFloat()
 
         var drawIndicator = true
 
-        when(viewType){
+        when (viewType) {
             ViewType.FIRST -> {
-                rectLeft = (width / 2)-(indicatorRadius/3)
-                rectRight = (width / 2)+(indicatorRadius/3)
-                rectTop = (height/2).toFloat()
+                rectTop = (height / 2).toFloat()
                 rectBottom = height.toFloat()
             }
-            ViewType.MIDDLE-> {
-                rectLeft = (width / 2)-(indicatorRadius/3)
-                rectRight = (width / 2)+(indicatorRadius/3)
+            ViewType.MIDDLE -> {
                 rectTop = 0f
                 rectBottom = height.toFloat()
 
             }
-            ViewType.LAST-> {
-                rectLeft = (width / 2)-(indicatorRadius/3)
-                rectRight = (width / 2)+(indicatorRadius/3)
+            ViewType.LAST -> {
                 rectTop = 0f
-                rectBottom = (height/2).toFloat()
+                rectBottom = (height / 2).toFloat()
 
             }
-            ViewType.SPACER-> {
-                rectLeft = (width / 2)-(indicatorRadius/3)
-                rectRight = (width / 2)+(indicatorRadius/3)
+            ViewType.SPACER -> {
                 rectTop = 0f
                 rectBottom = height.toFloat()
                 drawIndicator = false
             }
         }
 
-        if(drawIndicator)
+        if (drawIndicator)
             canvas.drawCircle(indicatorCenterX, indicatorCenterY, indicatorRadius, paint)
 
         canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, paint)
     }
+
+    fun setType(position: Int, totalItems: Int) {
+        when (position) {
+            0 -> viewType = ViewType.FIRST
+            totalItems - 1 -> viewType = ViewType.LAST
+            else -> viewType = ViewType.MIDDLE
+        }
+    }
+
 }
