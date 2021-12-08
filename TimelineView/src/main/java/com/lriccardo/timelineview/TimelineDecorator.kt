@@ -7,9 +7,9 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
 class TimelineDecorator(
-    val indicatorRadius: Int = 24,
+    val indicatorRadius: Float = 24f,
     val lineWidth: Float = indicatorRadius/1.61f,
-    val padding: Int = indicatorRadius*2,
+    val padding: Float = indicatorRadius*2,
     val position: Position = Position.Left
 ) : RecyclerView.ItemDecoration() {
 
@@ -28,9 +28,9 @@ class TimelineDecorator(
     ) {
         when(position){
             Position.Left ->
-                rect.left = width
+                rect.left = width.toInt()
             Position.Right ->
-                rect.right = width
+                rect.right = width.toInt()
         }
     }
 
@@ -47,7 +47,7 @@ class TimelineDecorator(
             timelineView.lineWidth = lineWidth.toFloat()
 
             timelineView.measure(
-                View.MeasureSpec.getSize(width),
+                View.MeasureSpec.getSize(width.toInt()),
                 View.MeasureSpec.getSize(it.measuredHeight)
             )
             c.save()
