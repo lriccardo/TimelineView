@@ -9,5 +9,7 @@
         </attr>
         <attr name="tv_indicator_radius" format="dimension"/>
         <attr name="tv_line_width" format="dimension"/>
+        <attr name="tv_indicator_color" format="color"/>
+        <attr name="tv_line_color" format="color"/>
     </declare-styleable>
 </resources>

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
 
 
 class TimelineView @JvmOverloads constructor(
@@ -24,6 +25,11 @@ class TimelineView @JvmOverloads constructor(
     var viewType = ViewType.FIRST
     var indicatorRadius: Float
     var lineWidth: Float
+
+    @ColorInt
+    var indicatorColor: Int
+    @ColorInt
+    var lineColor: Int
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -45,6 +51,8 @@ class TimelineView @JvmOverloads constructor(
                     R.styleable.TimelineView_tv_line_width,
                     (indicatorRadius / 1.61).toInt()
                 ).toFloat()
+                indicatorColor = getColor(R.styleable.TimelineView_tv_indicator_color, Color.RED)
+                lineColor = getColor(R.styleable.TimelineView_tv_line_color, Color.RED)
             } finally {
                 recycle()
             }
@@ -60,7 +68,7 @@ class TimelineView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        paint.color = Color.RED
+        paint.color = indicatorColor
         var rectLeft = (width / 2) - (lineWidth / 2)
         var rectRight = (width / 2) + (lineWidth / 2)
         var rectTop = (height / 2).toFloat()
@@ -96,6 +104,7 @@ class TimelineView @JvmOverloads constructor(
         if (drawIndicator)
             canvas.drawCircle(indicatorCenterX, indicatorCenterY, indicatorRadius, paint)
 
+        paint.color = lineColor
         canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, paint)
     }
 
