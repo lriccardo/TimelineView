@@ -3,6 +3,7 @@
 
 A customizable and easy-to-use Timeline View library for Android
 
+![header](https://github.com/lriccardo/TimelineView/blob/main/screens/header.png)
 ## Setup
 
 ### 1. Add Jitpack to your root build.gradle
@@ -36,6 +37,26 @@ dependencies {
     app:indicator_color="@color/teal_700"
     app:line_color="@color/teal_700" />
 ```
+- View types
+    <table>
+        <th>View type</th>
+        <th>Preview</th>        
+        <th>View type</th>
+        <th>Preview</th>
+        <tr>
+            <td>first</td>
+            <td><img src="https://github.com/lriccardo/TimelineView/blob/main/screens/first.jpg" alt="first" width="200"/></td>
+            <td>middle</td>
+            <td><img src="https://github.com/lriccardo/TimelineView/blob/main/screens/middle.jpg" alt="middle" width="200"/></td>
+        </tr>
+        <tr>
+            <td>last</td>
+            <td><img src="https://github.com/lriccardo/TimelineView/blob/main/screens/last.jpg" alt="last" width="200"/></td>
+            <td>spacer</td>
+            <td><img src="https://github.com/lriccardo/TimelineView/blob/main/screens/spacer.jpg" alt="spacer" width="200"/></td>
+        </tr>
+    </table>
+    
 - Customization
 
     <table>
