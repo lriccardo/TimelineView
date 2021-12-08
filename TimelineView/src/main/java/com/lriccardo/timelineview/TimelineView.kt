@@ -28,6 +28,7 @@ class TimelineView @JvmOverloads constructor(
 
     @ColorInt
     var indicatorColor: Int
+
     @ColorInt
     var lineColor: Int
 
@@ -68,7 +69,7 @@ class TimelineView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        paint.color = indicatorColor
+
         var rectLeft = (width / 2) - (lineWidth / 2)
         var rectRight = (width / 2) + (lineWidth / 2)
         var rectTop = (height / 2).toFloat()
@@ -101,11 +102,13 @@ class TimelineView @JvmOverloads constructor(
             }
         }
 
-        if (drawIndicator)
-            canvas.drawCircle(indicatorCenterX, indicatorCenterY, indicatorRadius, paint)
-
         paint.color = lineColor
         canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, paint)
+
+        if (drawIndicator) {
+            paint.color = indicatorColor
+            canvas.drawCircle(indicatorCenterX, indicatorCenterY, indicatorRadius, paint)
+        }
     }
 
     fun setType(position: Int, totalItems: Int) {
