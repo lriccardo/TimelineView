@@ -3,6 +3,7 @@ package com.lriccardo.timelineview
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
@@ -10,7 +11,9 @@ class TimelineDecorator(
     val indicatorRadius: Float = 24f,
     val lineWidth: Float = indicatorRadius / 1.61f,
     val padding: Float = indicatorRadius * 2,
-    val position: Position = Position.Left
+    val position: Position = Position.Left,
+    @ColorInt val indicatorColor: Int? = null,
+    @ColorInt val lineColor: Int? = null
 ) : RecyclerView.ItemDecoration() {
 
     val width = ((indicatorRadius * 2) + (padding * 2))
@@ -45,6 +48,12 @@ class TimelineDecorator(
             timelineView.setType(itemPosition, parent.adapter?.itemCount ?: -1)
             timelineView.indicatorRadius = indicatorRadius
             timelineView.lineWidth = lineWidth
+            indicatorColor?.let {
+                timelineView.indicatorColor = it
+            }
+            lineColor?.let {
+                timelineView.lineColor = it
+            }
 
             timelineView.measure(
                 View.MeasureSpec.getSize(width.toInt()),
