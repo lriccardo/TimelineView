@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorInt
 
@@ -44,14 +45,14 @@ class TimelineView @JvmOverloads constructor(
         ).apply {
             try {
                 viewType = ViewType.values()[getInteger(R.styleable.TimelineView_timeline_item_type, 0)]
-                indicatorRadius = getDimensionPixelSize(
+                indicatorRadius = getDimension(
                     R.styleable.TimelineView_indicator_radius,
-                    24
-                ).toFloat()
-                lineWidth = getDimensionPixelSize(
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, context.getResources().getDisplayMetrics())
+                )
+                lineWidth = getDimension(
                     R.styleable.TimelineView_line_width,
-                    (indicatorRadius / 1.61).toInt()
-                ).toFloat()
+                    (indicatorRadius / 1.61).toFloat()
+                )
                 indicatorColor = getColor(R.styleable.TimelineView_indicator_color, Color.RED)
                 lineColor = getColor(R.styleable.TimelineView_line_color, Color.RED)
             } finally {
