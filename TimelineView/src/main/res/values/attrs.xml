@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TimelineView">
+        <attr name="tv_view_type" format="enum">
+            <enum name="first" value="0"/>
+            <enum name="middle" value="1"/>
+            <enum name="last" value="2"/>
+            <enum name="spacer" value="3"/>
+        </attr>
+        <attr name="tv_indicator_radius" format="dimension"/>
+    </declare-styleable>
+</resources>
