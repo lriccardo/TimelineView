@@ -5,14 +5,14 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lriccardo.timelineview.TimelineDecorator
 import com.lriccardo.timelineview_example.adapters.BaseAdapter
-import com.lriccardo.timelineview_example.databinding.ActivityRecyclerViewBinding
+import com.lriccardo.timelineview_example.databinding.ActivityRecyclerViewDecoratorBinding
 
 class RecyclerViewDecoratorActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRecyclerViewBinding
+    private lateinit var binding: ActivityRecyclerViewDecoratorBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRecyclerViewBinding.inflate(layoutInflater)
+        binding = ActivityRecyclerViewDecoratorBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         binding.timelineRv.let {
