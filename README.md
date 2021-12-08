@@ -3,6 +3,8 @@
 
 A customizable and easy-to-use Timeline View library for Android
 
+Can be used as a standalone view or as a RecyclerView decorator
+
 ![header](https://github.com/lriccardo/TimelineView/blob/main/screens/header.png)
 ## Setup
 
