@@ -14,7 +14,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:timeline_item_type="first" />
+        app:timeline_item_type="first"
+        app:indicator_color="?colorPrimary"
+        app:line_color="?colorPrimary"/>
 
     <com.lriccardo.timelineview.TimelineView
         android:id="@+id/timeline_middle"
@@ -24,7 +26,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeline_first"
-        app:timeline_item_type="middle" />
+        app:timeline_item_type="middle"
+        app:indicator_style="empty"
+        app:indicator_color="?colorPrimary"
+        app:line_color="?colorPrimary"/>
 
     <com.lriccardo.timelineview.TimelineView
         android:id="@+id/timeline_spacer"
@@ -34,7 +39,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeline_middle"
-        app:timeline_item_type="spacer" />
+        app:timeline_item_type="spacer"
+        app:line_style="dashed"
+        app:indicator_color="?colorPrimary"
+        app:line_color="?colorPrimary"/>
 
     <com.lriccardo.timelineview.TimelineView
         android:id="@+id/timeline_last"
@@ -44,5 +52,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeline_spacer"
-        app:timeline_item_type="last" />
+        app:timeline_item_type="last"
+        app:indicator_style="checked"
+        app:line_style="dashed"
+        app:indicator_color="?colorPrimary"
+        app:line_color="?colorPrimary"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
