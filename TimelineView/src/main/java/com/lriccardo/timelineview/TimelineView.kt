@@ -190,8 +190,14 @@ class TimelineView @JvmOverloads constructor(
     }
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val width = resolveSizeAndState((indicatorSize * 2).toInt(), widthMeasureSpec, 0)
-        val height = resolveSizeAndState((indicatorSize * 2).toInt(), heightMeasureSpec, 0)
+        val size = when(indicatorStyle){
+            IndicatorStyle.Filled -> indicatorSize*2
+            IndicatorStyle.Empty -> (indicatorSize*2) + checkedIndicatorStrokeWidth
+            IndicatorStyle.Checked -> (indicatorSize*2) + checkedIndicatorStrokeWidth
+        }.toInt()
+
+        val width = resolveSizeAndState(size, widthMeasureSpec, 0)
+        val height = resolveSizeAndState(size, heightMeasureSpec, 0)
         setMeasuredDimension(width, height)
     }
 
