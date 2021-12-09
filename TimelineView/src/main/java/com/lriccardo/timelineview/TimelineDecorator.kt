@@ -8,12 +8,12 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
 class TimelineDecorator(
-    val indicatorSize: Float = 12.toPx().toFloat(),
     val indicatorStyle: TimelineView.IndicatorStyle = TimelineView.IndicatorStyle.Filled,
+    val indicatorSize: Float = 12.toPx().toFloat(),
     val checkedIndicatorSize: Float? = null,
     val checkedIndicatorStrokeWidth: Float = 4.toPx().toFloat(),
-    val lineWidth: Float? = null,
     val lineStyle: TimelineView.LineStyle? = null,
+    val lineWidth: Float? = null,
     val padding: Float = 16.toPx().toFloat(),
     val position: Position = Position.Left,
     @ColorInt val indicatorColor: Int? = null,
