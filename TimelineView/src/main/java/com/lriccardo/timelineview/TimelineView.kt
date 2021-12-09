@@ -1,6 +1,7 @@
 package com.lriccardo.timelineview
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -23,17 +24,50 @@ class TimelineView @JvmOverloads constructor(
         SPACER
     }
 
+    enum class IndicatorStyle {
+        Filled,
+        Empty,
+        Checked
+    }
+
     var viewType = ViewType.FIRST
-    var indicatorRadius: Float
+
+    var indicatorSize: Float
+    @ColorInt
+    var indicatorColor: Int = Color.RED
+        set(value) {
+            field = value
+            initIndicatorPaint()
+        }
+    var indicatorStyle = IndicatorStyle.Filled
+        set(value) {
+            field = value
+            initIndicatorPaint()
+        }
+
+    var checkedIndicatorSize: Float
+    var checkedIndicatorStrokeWidth: Float = 4.toPx().toFloat()
+        set(value) {
+            field = value
+            initIndicatorPaint()
+        }
+
+
     var lineWidth: Float
-
     @ColorInt
-    var indicatorColor: Int
+    var lineColor: Int = Color.RED
+        set(value) {
+            field = value
+            initLinePaint()
+        }
 
-    @ColorInt
-    var lineColor: Int
 
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private var indicatorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+    }
+    private var checkedIndicatorPaint: Paint? = null
+
+    private var linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }
 
@@ -44,28 +78,76 @@ class TimelineView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                viewType = ViewType.values()[getInteger(R.styleable.TimelineView_timeline_item_type, 0)]
-                indicatorRadius = getDimensionPixelSize(
-                    R.styleable.TimelineView_indicator_radius,
-                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12f, context.getResources().getDisplayMetrics())
-                        .toInt()
+                viewType =
+                    ViewType.values()[getInteger(R.styleable.TimelineView_timeline_item_type, 0)]
+
+                indicatorSize = getDimensionPixelSize(
+                    R.styleable.TimelineView_indicator_size,
+                    12.toPx()
                 ).toFloat()
+
+                checkedIndicatorSize = getDimensionPixelSize(
+                    R.styleable.TimelineView_checked_indicator_size,
+                    6.toPx()
+                ).toFloat()
+
                 lineWidth = getDimensionPixelSize(
                     R.styleable.TimelineView_line_width,
-                    (indicatorRadius / 1.61).toFloat().toInt()
+                    8.toPx()
                 ).toFloat()
+
+                checkedIndicatorStrokeWidth = getDimensionPixelSize(
+                    R.styleable.TimelineView_checked_indicator_stroke_width,
+                    4.toPx()
+                ).toFloat()
+
                 indicatorColor = getColor(R.styleable.TimelineView_indicator_color, Color.RED)
                 lineColor = getColor(R.styleable.TimelineView_line_color, Color.RED)
+                indicatorStyle =
+                    IndicatorStyle.values()[getInteger(R.styleable.TimelineView_indicator_style, 2)]
+
+                initIndicatorPaint()
+                initLinePaint()
             } finally {
                 recycle()
             }
         }
     }
 
+    private fun initIndicatorPaint() {
+        indicatorPaint.apply {
+            when (indicatorStyle) {
+                IndicatorStyle.Filled -> {
+                    style = Paint.Style.FILL
+                    color = indicatorColor
+                }
+                IndicatorStyle.Empty -> {
+                    style = Paint.Style.STROKE
+                    strokeWidth = checkedIndicatorStrokeWidth
+                    color = indicatorColor
+                }
+                IndicatorStyle.Checked -> {
+                    style = Paint.Style.STROKE
+                    strokeWidth = checkedIndicatorStrokeWidth
+                    color = indicatorColor
+                    checkedIndicatorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                        style = Paint.Style.FILL
+                        color = indicatorColor
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initLinePaint() {
+        linePaint.apply {
+            color = lineColor
+        }
+    }
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val width = resolveSizeAndState((indicatorRadius * 2).toInt(), widthMeasureSpec, 0)
-        val height = resolveSizeAndState((indicatorRadius * 2).toInt(), heightMeasureSpec, 0)
+        val width = resolveSizeAndState((indicatorSize * 2).toInt(), widthMeasureSpec, 0)
+        val height = resolveSizeAndState((indicatorSize * 2).toInt(), heightMeasureSpec, 0)
         setMeasuredDimension(width, height)
     }
 
@@ -74,7 +156,7 @@ class TimelineView @JvmOverloads constructor(
 
         var rectLeft = (width / 2) - (lineWidth / 2)
         var rectRight = (width / 2) + (lineWidth / 2)
-        var rectTop = (height / 2).toFloat()
+        var rectTop = (height / 2).toFloat() + indicatorSize
         var rectBottom = height.toFloat()
 
         var indicatorCenterX = (width / 2).toFloat()
@@ -84,18 +166,16 @@ class TimelineView @JvmOverloads constructor(
 
         when (viewType) {
             ViewType.FIRST -> {
-                rectTop = (height / 2).toFloat()
+                rectTop = indicatorCenterY + indicatorSize
                 rectBottom = height.toFloat()
             }
             ViewType.MIDDLE -> {
                 rectTop = 0f
                 rectBottom = height.toFloat()
-
             }
             ViewType.LAST -> {
                 rectTop = 0f
-                rectBottom = (height / 2).toFloat()
-
+                rectBottom = indicatorCenterY - indicatorSize
             }
             ViewType.SPACER -> {
                 rectTop = 0f
@@ -104,12 +184,50 @@ class TimelineView @JvmOverloads constructor(
             }
         }
 
-        paint.color = lineColor
-        canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, paint)
+        if (viewType == ViewType.MIDDLE) {
+            canvas.drawRect(
+                rectLeft,
+                rectTop,
+                rectRight,
+                indicatorCenterY - indicatorSize,
+                linePaint
+            )
+            canvas.drawRect(
+                rectLeft,
+                indicatorCenterY + indicatorSize,
+                rectRight,
+                rectBottom,
+                linePaint
+            )
+        } else {
+            canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, linePaint)
+        }
 
         if (drawIndicator) {
-            paint.color = indicatorColor
-            canvas.drawCircle(indicatorCenterX, indicatorCenterY, indicatorRadius, paint)
+            if (indicatorStyle == IndicatorStyle.Checked) {
+                canvas.drawCircle(
+                    indicatorCenterX,
+                    indicatorCenterY,
+                    indicatorSize,
+                    indicatorPaint
+                )
+                checkedIndicatorPaint?.let {
+                    it.color = indicatorColor
+                    canvas.drawCircle(
+                        indicatorCenterX,
+                        indicatorCenterY,
+                        checkedIndicatorSize,
+                        it
+                    )
+                }
+            } else {
+                canvas.drawCircle(
+                    indicatorCenterX,
+                    indicatorCenterY,
+                    indicatorSize,
+                    indicatorPaint
+                )
+            }
         }
     }
 
@@ -122,3 +240,9 @@ class TimelineView @JvmOverloads constructor(
     }
 
 }
+
+internal fun Number.toPx() = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    this.toFloat(),
+    Resources.getSystem().displayMetrics
+).toInt()

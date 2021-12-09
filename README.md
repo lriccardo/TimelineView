@@ -34,7 +34,7 @@ dependencies {
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     app:timeline_item_type="first"
-    app:indicator_radius="12dp"
+    app:indicator_size="12dp"
     app:line_width="8dp"
     app:indicator_color="@color/teal_700"
     app:line_color="@color/teal_700" />
@@ -71,14 +71,14 @@ dependencies {
             <td>first</td>
         </tr>
         <tr>
-            <td>app:indicator_radius</td>
+            <td>app:indicator_size</td>
             <td>Dimension</td>
             <td>12dp</td>
         </tr>
         <tr>
             <td>app:line_width</td>
             <td>Dimension</td>
-            <td>indicator_radius/1.61</td>
+            <td>indicator_size/1.61</td>
         </tr>
         </tr>
             <tr>
@@ -98,7 +98,7 @@ dependencies {
 ```
 recyclerView.addItemDecoration(
     TimelineDecorator(
-        indicatorRadius = 24f,
+        indicatorSize = 24f,
         lineWidth = 15f,
         padding = 48f,
         position = TimelineDecorator.Position.Left,
@@ -115,19 +115,19 @@ recyclerView.addItemDecoration(
         <th>Accepted values</th>
         <th>Default</th>
         <tr>
-            <td>indicatorRadius</td>
+            <td>indicatorSize</td>
             <td>Float</td>
             <td>24f</td>
         </tr>
         <tr>
             <td>lineWidth</td>
             <td>Float</td>
-            <td>indicatorRadius/1.61</td>
+            <td>indicatorSize/1.61</td>
         </tr>        
         <tr>
             <td>padding</td>
             <td>Float</td>
-            <td>indicatorRadius*2</td>
+            <td>indicatorSize*2</td>
         </tr>
         <tr>
             <td>position</td>
