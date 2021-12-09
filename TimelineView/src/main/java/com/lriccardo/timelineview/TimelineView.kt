@@ -2,9 +2,7 @@ package com.lriccardo.timelineview
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -30,9 +28,14 @@ class TimelineView @JvmOverloads constructor(
         Checked
     }
 
+    enum class LineStyle {
+        Normal,
+        Dashed
+    }
+
     var viewType = ViewType.FIRST
 
-    var indicatorSize: Float
+    var indicatorSize: Float = 12.toPx().toFloat()
     @ColorInt
     var indicatorColor: Int = Color.RED
         set(value) {
@@ -45,15 +48,34 @@ class TimelineView @JvmOverloads constructor(
             initIndicatorPaint()
         }
 
-    var checkedIndicatorSize: Float
+    var checkedIndicatorSize: Float = 6.toPx().toFloat()
     var checkedIndicatorStrokeWidth: Float = 4.toPx().toFloat()
         set(value) {
             field = value
             initIndicatorPaint()
         }
 
+    var lineStyle = LineStyle.Normal
+        set(value) {
+            field = value
+            initLinePaint()
+        }
+    var lineWidth: Float = 8.toPx().toFloat()
+        set(value) {
+            field = value
+            initLinePaint()
+        }
+    var lineDashLength: Float = 18.toPx().toFloat()
+        set(value) {
+            field = value
+            initLinePaint()
+        }
+    var lineDashGap: Float = 12.toPx().toFloat()
+        set(value) {
+            field = value
+            initLinePaint()
+        }
 
-    var lineWidth: Float
     @ColorInt
     var lineColor: Int = Color.RED
         set(value) {
@@ -61,14 +83,13 @@ class TimelineView @JvmOverloads constructor(
             initLinePaint()
         }
 
-
     private var indicatorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }
     private var checkedIndicatorPaint: Paint? = null
 
     private var linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.FILL
+        style = Paint.Style.STROKE
     }
 
     init {
@@ -79,32 +100,46 @@ class TimelineView @JvmOverloads constructor(
         ).apply {
             try {
                 viewType =
-                    ViewType.values()[getInteger(R.styleable.TimelineView_timeline_item_type, 0)]
+                    ViewType.values()[getInteger(R.styleable.TimelineView_timeline_item_type, viewType.ordinal)]
 
                 indicatorSize = getDimensionPixelSize(
                     R.styleable.TimelineView_indicator_size,
-                    12.toPx()
+                    indicatorSize.toInt()
                 ).toFloat()
 
                 checkedIndicatorSize = getDimensionPixelSize(
                     R.styleable.TimelineView_checked_indicator_size,
-                    6.toPx()
+                    checkedIndicatorSize.toInt()
                 ).toFloat()
 
                 lineWidth = getDimensionPixelSize(
                     R.styleable.TimelineView_line_width,
-                    8.toPx()
+                    lineWidth.toInt()
                 ).toFloat()
+
+                lineDashLength = getDimensionPixelSize(
+                    R.styleable.TimelineView_line_dash_length,
+                    lineDashLength.toInt()
+                ).toFloat()
+
+                lineDashGap = getDimensionPixelSize(
+                    R.styleable.TimelineView_line_dash_gap,
+                    lineDashGap.toInt()
+                ).toFloat()
+
+                lineStyle =
+                    LineStyle.values()[getInteger(R.styleable.TimelineView_indicator_style, lineStyle.ordinal)]
+
+                lineColor = getColor(R.styleable.TimelineView_line_color, lineColor)
 
                 checkedIndicatorStrokeWidth = getDimensionPixelSize(
                     R.styleable.TimelineView_checked_indicator_stroke_width,
-                    4.toPx()
+                    checkedIndicatorStrokeWidth.toInt()
                 ).toFloat()
 
-                indicatorColor = getColor(R.styleable.TimelineView_indicator_color, Color.RED)
-                lineColor = getColor(R.styleable.TimelineView_line_color, Color.RED)
+                indicatorColor = getColor(R.styleable.TimelineView_indicator_color, indicatorColor)
                 indicatorStyle =
-                    IndicatorStyle.values()[getInteger(R.styleable.TimelineView_indicator_style, 2)]
+                    IndicatorStyle.values()[getInteger(R.styleable.TimelineView_indicator_style, indicatorStyle.ordinal)]
 
                 initIndicatorPaint()
                 initLinePaint()
@@ -118,7 +153,7 @@ class TimelineView @JvmOverloads constructor(
         indicatorPaint.apply {
             when (indicatorStyle) {
                 IndicatorStyle.Filled -> {
-                    style = Paint.Style.FILL
+                    style = Paint.Style.FILL_AND_STROKE
                     color = indicatorColor
                 }
                 IndicatorStyle.Empty -> {
@@ -142,6 +177,15 @@ class TimelineView @JvmOverloads constructor(
     private fun initLinePaint() {
         linePaint.apply {
             color = lineColor
+            when(lineStyle){
+                LineStyle.Normal -> {
+                    pathEffect = PathEffect()
+                }
+                LineStyle.Dashed -> {
+                    pathEffect = DashPathEffect(floatArrayOf(lineDashLength, lineDashGap), 0.0f)
+                }
+            }
+            strokeWidth = lineWidth
         }
     }
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -154,53 +198,53 @@ class TimelineView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        var rectLeft = (width / 2) - (lineWidth / 2)
-        var rectRight = (width / 2) + (lineWidth / 2)
-        var rectTop = (height / 2).toFloat() + indicatorSize
-        var rectBottom = height.toFloat()
+        val lineX = (width / 2).toFloat()
 
-        var indicatorCenterX = (width / 2).toFloat()
-        var indicatorCenterY = (height / 2).toFloat()
+        var topLineYStart: Float
+        var topLineYEnd: Float
+
+        var bottomLineYStart: Float
+        var bottomLineYEnd: Float
+
+        val indicatorCenterX = (width / 2).toFloat()
+        val indicatorCenterY = (height / 2).toFloat()
 
         var drawIndicator = true
+        var drawTopLine = false
+        var drawBottomLine = false
 
         when (viewType) {
             ViewType.FIRST -> {
-                rectTop = indicatorCenterY + indicatorSize
-                rectBottom = height.toFloat()
+                drawTopLine = false
+                drawBottomLine = true
             }
             ViewType.MIDDLE -> {
-                rectTop = 0f
-                rectBottom = height.toFloat()
+                drawTopLine = true
+                drawBottomLine = true
             }
             ViewType.LAST -> {
-                rectTop = 0f
-                rectBottom = indicatorCenterY - indicatorSize
+                drawTopLine = true
+                drawBottomLine = false
             }
             ViewType.SPACER -> {
-                rectTop = 0f
-                rectBottom = height.toFloat()
-                drawIndicator = false
+                drawTopLine = true
+                drawBottomLine = true
             }
         }
+        topLineYStart = 0f
+        if(lineStyle == LineStyle.Dashed)
+            topLineYStart += lineDashGap
 
-        if (viewType == ViewType.MIDDLE) {
-            canvas.drawRect(
-                rectLeft,
-                rectTop,
-                rectRight,
-                indicatorCenterY - indicatorSize,
-                linePaint
-            )
-            canvas.drawRect(
-                rectLeft,
-                indicatorCenterY + indicatorSize,
-                rectRight,
-                rectBottom,
-                linePaint
-            )
-        } else {
-            canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, linePaint)
+        topLineYEnd = (indicatorCenterY - indicatorSize) + 1f
+
+        bottomLineYStart = height.toFloat()
+        bottomLineYEnd = (indicatorCenterY + indicatorSize)- 1f
+
+        if(drawTopLine) {
+            canvas.drawLine(lineX, topLineYStart, lineX, topLineYEnd, linePaint)
+        }
+        if(drawBottomLine){
+            canvas.drawLine(lineX, bottomLineYStart, lineX, bottomLineYEnd, linePaint)
         }
 
         if (drawIndicator) {
