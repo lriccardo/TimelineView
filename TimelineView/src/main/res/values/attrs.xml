@@ -23,7 +23,6 @@
         <attr name="line_style" format="enum">
             <enum name="normal" value="0"/>
             <enum name="dashed" value="1"/>
-            <enum name="dotted" value="2"/>
         </attr>
     </declare-styleable>
 </resources>
