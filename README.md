@@ -202,3 +202,17 @@ recyclerView.addItemDecoration(
             <td>TimelineView default value</td>
         </tr>
     </table>
+    
+- Advanced customization
+    
+    If your `RecyclerView.Adapter` implements `TimelineAdapter` you can customize how each item of your list is drawn.
+    Implementing one or all of these methods, allows you to use the `position` argument to return a different customization for some of your items.
+    ```
+    interface TimelineAdapter {
+        fun getTimelineViewType(position: Int): TimelineView.ViewType
+        fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle
+        fun getIndicatorColor(position: Int): Int
+        fun getLineColor(position: Int): Int
+        fun getLineStyle(position: Int): TimelineView.LineStyle
+    }
+    ```
