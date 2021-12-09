@@ -22,7 +22,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.lriccardo:TimelineView:main-SNAPSHOT'
+    implementation 'com.github.lriccardo:TimelineView:1.0.3'
 }
 ```
 
