@@ -128,7 +128,7 @@ class TimelineView @JvmOverloads constructor(
                 ).toFloat()
 
                 lineStyle =
-                    LineStyle.values()[getInteger(R.styleable.TimelineView_indicator_style, lineStyle.ordinal)]
+                    LineStyle.values()[getInteger(R.styleable.TimelineView_line_style, lineStyle.ordinal)]
 
                 lineColor = getColor(R.styleable.TimelineView_line_color, lineColor)
 
