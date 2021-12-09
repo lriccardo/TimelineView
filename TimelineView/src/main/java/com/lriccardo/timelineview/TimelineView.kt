@@ -223,28 +223,38 @@ class TimelineView @JvmOverloads constructor(
             ViewType.FIRST -> {
                 drawTopLine = false
                 drawBottomLine = true
+                drawIndicator = true
             }
             ViewType.MIDDLE -> {
                 drawTopLine = true
                 drawBottomLine = true
+                drawIndicator = true
             }
             ViewType.LAST -> {
                 drawTopLine = true
                 drawBottomLine = false
+                drawIndicator = true
             }
             ViewType.SPACER -> {
                 drawTopLine = true
                 drawBottomLine = true
+                drawIndicator = false
             }
         }
+
         topLineYStart = 0f
         if(lineStyle == LineStyle.Dashed)
             topLineYStart += lineDashGap
 
-        topLineYEnd = (indicatorCenterY - indicatorSize) + 1f
 
         bottomLineYStart = height.toFloat()
-        bottomLineYEnd = (indicatorCenterY + indicatorSize)- 1f
+        if(drawIndicator) {
+            topLineYEnd = (indicatorCenterY - indicatorSize) + 1f
+            bottomLineYEnd = (indicatorCenterY + indicatorSize) - 1f
+        } else {
+            topLineYEnd = indicatorCenterY
+            bottomLineYEnd = indicatorCenterY
+        }
 
         if(drawTopLine) {
             canvas.drawLine(lineX, topLineYStart, lineX, topLineYEnd, linePaint)
