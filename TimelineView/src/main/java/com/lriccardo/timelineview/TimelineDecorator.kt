@@ -8,15 +8,19 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
 class TimelineDecorator(
-    val indicatorRadius: Float = 24f,
-    val lineWidth: Float = indicatorRadius / 1.61f,
-    val padding: Float = indicatorRadius * 2,
+    val indicatorStyle: TimelineView.IndicatorStyle = TimelineView.IndicatorStyle.Filled,
+    val indicatorSize: Float = 12.toPx().toFloat(),
+    val checkedIndicatorSize: Float? = null,
+    val checkedIndicatorStrokeWidth: Float = 4.toPx().toFloat(),
+    val lineStyle: TimelineView.LineStyle? = null,
+    val lineWidth: Float? = null,
+    val padding: Float = 16.toPx().toFloat(),
     val position: Position = Position.Left,
     @ColorInt val indicatorColor: Int? = null,
     @ColorInt val lineColor: Int? = null
 ) : RecyclerView.ItemDecoration() {
 
-    val width = ((indicatorRadius * 2) + (padding * 2))
+    val width = ((indicatorSize * 2) + (padding * 2))
 
     enum class Position {
         Left,
@@ -29,11 +33,17 @@ class TimelineDecorator(
         parent: RecyclerView,
         s: RecyclerView.State
     ) {
+        val size = when(indicatorStyle){
+            TimelineView.IndicatorStyle.Filled -> indicatorSize*2
+            TimelineView.IndicatorStyle.Empty -> (indicatorSize*2) + checkedIndicatorStrokeWidth
+            TimelineView.IndicatorStyle.Checked -> (indicatorSize*2) + checkedIndicatorStrokeWidth
+        }.toInt()
+
         when (position) {
             Position.Left ->
-                rect.left = width.toInt()
+                rect.left = size
             Position.Right ->
-                rect.right = width.toInt()
+                rect.right = size
         }
     }
 
@@ -45,20 +55,46 @@ class TimelineDecorator(
                 return
 
             val timelineView = TimelineView(context = parent.context)
-            timelineView.setType(itemPosition, parent.adapter?.itemCount ?: -1)
-            timelineView.indicatorRadius = indicatorRadius
-            timelineView.lineWidth = lineWidth
-            indicatorColor?.let {
-                timelineView.indicatorColor = it
+            (parent.adapter as? TimelineAdapter)?.run {
+                getTimelineViewType(itemPosition)?.let {
+                    timelineView.viewType = it
+                } ?: timelineView.setType(itemPosition, parent.adapter?.itemCount ?: -1)
+
+                (getIndicatorColor(itemPosition) ?: indicatorColor)?.let {
+                    timelineView.indicatorColor = it
+                }
+
+                (getLineColor(itemPosition) ?: lineColor)?.let {
+                    timelineView.lineColor = it
+                }
+
+                (getIndicatorStyle(itemPosition) ?: indicatorStyle)?.let {
+                    timelineView.indicatorStyle = it
+                }
+
+                (getLineStyle(itemPosition) ?: lineStyle)?.let {
+                    timelineView.lineStyle = it
+                }
             }
-            lineColor?.let {
-                timelineView.lineColor = it
+            timelineView.indicatorSize = indicatorSize
+
+            checkedIndicatorSize?.let {
+                timelineView.checkedIndicatorSize = it
+            }
+
+            checkedIndicatorStrokeWidth?.let {
+                timelineView.checkedIndicatorStrokeWidth = it
+            }
+
+            lineWidth?.let {
+                timelineView.lineWidth = it
             }
 
             timelineView.measure(
                 View.MeasureSpec.getSize(width.toInt()),
                 View.MeasureSpec.getSize(it.measuredHeight)
             )
+
             c.save()
             when (position) {
                 Position.Left -> {
