@@ -7,4 +7,5 @@ interface TimelineAdapter {
     fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle? = null
     fun getIndicatorColor(position: Int): Int? = null
     fun getLineColor(position: Int): Int? = null
+    fun getLineStyle(position: Int): TimelineView.LineStyle? = null
 }
