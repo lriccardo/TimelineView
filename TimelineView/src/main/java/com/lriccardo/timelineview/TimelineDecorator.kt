@@ -34,9 +34,9 @@ class TimelineDecorator(
         s: RecyclerView.State
     ) {
         val size = when(indicatorStyle){
-            TimelineView.IndicatorStyle.Filled -> indicatorSize*2
-            TimelineView.IndicatorStyle.Empty -> (indicatorSize*2) + checkedIndicatorStrokeWidth
-            TimelineView.IndicatorStyle.Checked -> (indicatorSize*2) + checkedIndicatorStrokeWidth
+            TimelineView.IndicatorStyle.Filled -> width
+            TimelineView.IndicatorStyle.Empty -> width + checkedIndicatorStrokeWidth
+            TimelineView.IndicatorStyle.Checked -> width + checkedIndicatorStrokeWidth
         }.toInt()
 
         when (position) {
