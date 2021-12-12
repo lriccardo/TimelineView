@@ -1,7 +1,5 @@
 package com.lriccardo.timelineview
 
-import androidx.annotation.ColorInt
-
 interface TimelineAdapter {
     fun getTimelineViewType(position: Int): TimelineView.ViewType? = null
     fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle? = null
