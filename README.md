@@ -22,7 +22,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.lriccardo:TimelineView:1.0.3'
+    implementation 'com.github.lriccardo:TimelineView:1.0.4'
 }
 ```
 
