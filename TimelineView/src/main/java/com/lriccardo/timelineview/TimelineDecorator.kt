@@ -13,6 +13,7 @@ class TimelineDecorator(
     val checkedIndicatorSize: Float? = null,
     val checkedIndicatorStrokeWidth: Float = 4.toPx().toFloat(),
     val lineStyle: TimelineView.LineStyle? = null,
+    val linePadding: Float? = null,
     val lineWidth: Float? = null,
     val padding: Float = 16.toPx().toFloat(),
     val position: Position = Position.Left,
@@ -74,6 +75,10 @@ class TimelineDecorator(
 
                 (getLineStyle(itemPosition) ?: lineStyle)?.let {
                     timelineView.lineStyle = it
+                }
+
+                (getLinePadding(itemPosition) ?: linePadding)?.let {
+                    timelineView.linePadding = it
                 }
             }
             timelineView.indicatorSize = indicatorSize
