@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TimelineView Example</string>
+    <string name="configure">Configure</string>
 </resources>
