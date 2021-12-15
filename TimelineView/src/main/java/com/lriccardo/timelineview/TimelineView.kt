@@ -65,6 +65,12 @@ class TimelineView @JvmOverloads constructor(
             field = value
             initLinePaint()
         }
+    var linePadding: Float = 0.toPx().toFloat()
+        set(value) {
+            field = value
+            initLinePaint()
+        }
+
     var lineDashLength: Float = 18.toPx().toFloat()
         set(value) {
             field = value
@@ -115,6 +121,11 @@ class TimelineView @JvmOverloads constructor(
                 lineWidth = getDimensionPixelSize(
                     R.styleable.TimelineView_line_width,
                     lineWidth.toInt()
+                ).toFloat()
+
+                linePadding = getDimensionPixelSize(
+                    R.styleable.TimelineView_line_padding,
+                    linePadding.toInt()
                 ).toFloat()
 
                 lineDashLength = getDimensionPixelSize(
@@ -249,8 +260,8 @@ class TimelineView @JvmOverloads constructor(
 
         bottomLineYStart = height.toFloat()
         if(drawIndicator) {
-            topLineYEnd = (indicatorCenterY - indicatorSize) + 1f
-            bottomLineYEnd = (indicatorCenterY + indicatorSize) - 1f
+            topLineYEnd = (indicatorCenterY - indicatorSize) + 1f - linePadding
+            bottomLineYEnd = (indicatorCenterY + indicatorSize) - 1f + linePadding
         } else {
             topLineYEnd = indicatorCenterY
             bottomLineYEnd = indicatorCenterY

@@ -28,5 +28,6 @@
 
         <attr name="line_dash_length" format="dimension"/>
         <attr name="line_dash_gap" format="dimension"/>
+        <attr name="line_padding" format="dimension"/>
     </declare-styleable>
 </resources>
