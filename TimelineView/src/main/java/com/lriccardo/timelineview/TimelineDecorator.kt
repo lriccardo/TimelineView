@@ -10,9 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 class TimelineDecorator(
     val indicatorStyle: TimelineView.IndicatorStyle = TimelineView.IndicatorStyle.Filled,
     val indicatorSize: Float = 12.toPx().toFloat(),
+    val indicatorYPosition: Float = 0.5f,
     val checkedIndicatorSize: Float? = null,
     val checkedIndicatorStrokeWidth: Float = 4.toPx().toFloat(),
     val lineStyle: TimelineView.LineStyle? = null,
+    val linePadding: Float? = null,
+    val lineDashLength: Float? = null,
+    val lineDashGap: Float? = null,
     val lineWidth: Float? = null,
     val padding: Float = 16.toPx().toFloat(),
     val position: Position = Position.Left,
@@ -75,15 +79,29 @@ class TimelineDecorator(
                 (getLineStyle(itemPosition) ?: lineStyle)?.let {
                     timelineView.lineStyle = it
                 }
+
+                (getLinePadding(itemPosition) ?: linePadding)?.let {
+                    timelineView.linePadding = it
+                }
             }
             timelineView.indicatorSize = indicatorSize
+
+            timelineView.indicatorYPosition = indicatorYPosition
 
             checkedIndicatorSize?.let {
                 timelineView.checkedIndicatorSize = it
             }
 
-            checkedIndicatorStrokeWidth?.let {
+            checkedIndicatorStrokeWidth.let {
                 timelineView.checkedIndicatorStrokeWidth = it
+            }
+
+            lineDashLength?.let {
+                timelineView.lineDashLength = it
+            }
+
+            lineDashGap?.let {
+                timelineView.lineDashGap = it
             }
 
             lineWidth?.let {

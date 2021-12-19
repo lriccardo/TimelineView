@@ -87,10 +87,15 @@ dependencies {
             <td>12dp</td>
         </tr>
         </tr>
-            <tr>
+        <tr>
             <td>app:indicator_color</td>
             <td>Color</td>
             <td>Color.RED</td>
+        </tr>
+        <tr>
+             <td>app:indicator_y_position</td>
+             <td>Percentage (0.0 - 1.0)</td>
+             <td>0.5f</td>
         </tr>
         <tr>
             <td>app:checked_indicator_size</td>
@@ -161,6 +166,11 @@ recyclerView.addItemDecoration(
             <td>24f</td>
         </tr>
         <tr>
+             <td>indicatorYPosition</td>
+             <td>Percentage (0.0f - 1.0f)</td>
+             <td>0.5f</td>
+        </tr>
+        <tr>
             <td>checkedIndicatorSize</td>
             <td>Float</td>
             <td>TimelineView default value</td>
@@ -176,10 +186,25 @@ recyclerView.addItemDecoration(
             <td>TimelineView default value</td>
         </tr>
         <tr>
+            <td>linePadding</td>
+            <td>Float</td>
+            <td>TimelineView default value</td>
+        </tr>
+        <tr>
+             <td>lineDashLength</td>
+             <td>Float</td>
+             <td>TimelineView default value</td>
+        </tr>
+        <tr>
+            <td>lineDashGap</td>
+            <td>Float</td>
+            <td>TimelineView default value</td>
+        </tr>
+        <tr>
             <td>lineWidth</td>
             <td>Float</td>
             <td>TimelineView default value</td>
-        </tr>        
+        </tr>
         <tr>
             <td>padding</td>
             <td>Float</td>
@@ -209,10 +234,11 @@ recyclerView.addItemDecoration(
     Implementing one or all of these methods, allows you to use the `position` argument to return a different customization for some of your items.
     ```kotlin
     interface TimelineAdapter {
-        fun getTimelineViewType(position: Int): TimelineView.ViewType
-        fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle
-        fun getIndicatorColor(position: Int): Int
-        fun getLineColor(position: Int): Int
-        fun getLineStyle(position: Int): TimelineView.LineStyle
+        fun getTimelineViewType(position: Int): TimelineView.ViewType?
+        fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle?
+        fun getIndicatorColor(position: Int): Int?
+        fun getLineColor(position: Int): Int?
+        fun getLineStyle(position: Int): TimelineView.LineStyle?
+        fun getLinePadding(position: Int): Float?
     }
     ```
