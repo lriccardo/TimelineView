@@ -186,10 +186,25 @@ recyclerView.addItemDecoration(
             <td>TimelineView default value</td>
         </tr>
         <tr>
+            <td>linePadding</td>
+            <td>Float</td>
+            <td>TimelineView default value</td>
+        </tr>
+        <tr>
+             <td>lineDashLength</td>
+             <td>Float</td>
+             <td>TimelineView default value</td>
+        </tr>
+        <tr>
+            <td>lineDashGap</td>
+            <td>Float</td>
+            <td>TimelineView default value</td>
+        </tr>
+        <tr>
             <td>lineWidth</td>
             <td>Float</td>
             <td>TimelineView default value</td>
-        </tr>        
+        </tr>
         <tr>
             <td>padding</td>
             <td>Float</td>
