@@ -10,7 +10,7 @@ Can be used as a standalone view or as a RecyclerView decorator
 
 ### 1. Add Jitpack to your root build.gradle
 
-```
+```gradle
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }
@@ -20,16 +20,16 @@ allprojects {
 
 ### 2. Add the dependency
 
-```
+```gradle
 dependencies {
-    implementation 'com.github.lriccardo:TimelineView:1.0.3'
+    implementation 'com.github.lriccardo:TimelineView:1.0.4'
 }
 ```
 
 ## Usage
 
 ### Standalone view
-```
+```xml
 <com.lriccardo.timelineview.TimelineView
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
@@ -131,7 +131,7 @@ dependencies {
     </table>
 
 ### RecyclerView Decorator
-```
+```kotlin
 recyclerView.addItemDecoration(
     TimelineDecorator(
         indicatorSize = 24f,
@@ -202,3 +202,17 @@ recyclerView.addItemDecoration(
             <td>TimelineView default value</td>
         </tr>
     </table>
+    
+- Advanced customization
+    
+    If your `RecyclerView.Adapter` implements `TimelineAdapter` you can customize how each item of your list is drawn.
+    Implementing one or all of these methods, allows you to use the `position` argument to return a different customization for some of your items.
+    ```kotlin
+    interface TimelineAdapter {
+        fun getTimelineViewType(position: Int): TimelineView.ViewType
+        fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle
+        fun getIndicatorColor(position: Int): Int
+        fun getLineColor(position: Int): Int
+        fun getLineStyle(position: Int): TimelineView.LineStyle
+    }
+    ```
