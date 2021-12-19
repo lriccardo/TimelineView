@@ -219,10 +219,11 @@ recyclerView.addItemDecoration(
     Implementing one or all of these methods, allows you to use the `position` argument to return a different customization for some of your items.
     ```kotlin
     interface TimelineAdapter {
-        fun getTimelineViewType(position: Int): TimelineView.ViewType
-        fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle
-        fun getIndicatorColor(position: Int): Int
-        fun getLineColor(position: Int): Int
-        fun getLineStyle(position: Int): TimelineView.LineStyle
+        fun getTimelineViewType(position: Int): TimelineView.ViewType?
+        fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle?
+        fun getIndicatorColor(position: Int): Int?
+        fun getLineColor(position: Int): Int?
+        fun getLineStyle(position: Int): TimelineView.LineStyle?
+        fun getLinePadding(position: Int): Float?
     }
     ```
