@@ -15,6 +15,8 @@ class TimelineDecorator(
     val checkedIndicatorStrokeWidth: Float = 4.toPx().toFloat(),
     val lineStyle: TimelineView.LineStyle? = null,
     val linePadding: Float? = null,
+    val lineDashLength: Float? = null,
+    val lineDashGap: Float? = null,
     val lineWidth: Float? = null,
     val padding: Float = 16.toPx().toFloat(),
     val position: Position = Position.Left,
@@ -90,8 +92,16 @@ class TimelineDecorator(
                 timelineView.checkedIndicatorSize = it
             }
 
-            checkedIndicatorStrokeWidth?.let {
+            checkedIndicatorStrokeWidth.let {
                 timelineView.checkedIndicatorStrokeWidth = it
+            }
+
+            lineDashLength?.let {
+                timelineView.lineDashLength = it
+            }
+
+            lineDashGap?.let {
+                timelineView.lineDashGap = it
             }
 
             lineWidth?.let {
