@@ -36,8 +36,8 @@ class RecyclerViewDecoratorActivity : AppCompatActivity() {
             )
 
             it.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
                     (it.layoutManager as? LinearLayoutManager)?.let {
                         if (it.findFirstCompletelyVisibleItemPosition() == 0)
                             binding.fab.extend()
