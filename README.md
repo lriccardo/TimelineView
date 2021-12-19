@@ -87,10 +87,15 @@ dependencies {
             <td>12dp</td>
         </tr>
         </tr>
-            <tr>
+        <tr>
             <td>app:indicator_color</td>
             <td>Color</td>
             <td>Color.RED</td>
+        </tr>
+        <tr>
+             <td>app:indicator_y_position</td>
+             <td>Percentage (0.0 - 1.0)</td>
+             <td>0.5f</td>
         </tr>
         <tr>
             <td>app:checked_indicator_size</td>
@@ -159,6 +164,11 @@ recyclerView.addItemDecoration(
             <td>indicatorSize</td>
             <td>Float</td>
             <td>24f</td>
+        </tr>
+        <tr>
+             <td>indicatorYPosition</td>
+             <td>Percentage (0.0f - 1.0f)</td>
+             <td>0.5f</td>
         </tr>
         <tr>
             <td>checkedIndicatorSize</td>
