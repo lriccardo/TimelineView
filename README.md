@@ -131,7 +131,7 @@ recyclerView.addItemDecoration(
         <tr>
             <td>padding</td>
             <td>Float</td>
-            <td>16dp/td>
+            <td>16dp</td>
         </tr>
         <tr>
             <td>position</td>
