@@ -2,13 +2,18 @@ package com.lriccardo.timelineview
 
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
 class TimelineDecorator(
     val indicatorStyle: TimelineView.IndicatorStyle = TimelineView.IndicatorStyle.Filled,
+    val indicatorDrawable: Drawable? = null,
+    @DrawableRes val indicatorDrawableRes: Int? = null,
     val indicatorSize: Float = 12.toPx().toFloat(),
     val indicatorYPosition: Float = 0.5f,
     val checkedIndicatorSize: Float? = null,
@@ -63,6 +68,12 @@ class TimelineDecorator(
                 getTimelineViewType(itemPosition)?.let {
                     timelineView.viewType = it
                 } ?: timelineView.setType(itemPosition, parent.adapter?.itemCount ?: -1)
+
+                (getIndicatorDrawable(itemPosition) ?: indicatorDrawable)?.let {
+                    timelineView.indicatorDrawable = it
+                } ?: (getIndicatorDrawableRes(itemPosition) ?: indicatorDrawableRes)?.let {
+                    timelineView.indicatorDrawable = ContextCompat.getDrawable(parent.context, it)
+                }
 
                 (getIndicatorColor(itemPosition) ?: indicatorColor)?.let {
                     timelineView.indicatorColor = it
