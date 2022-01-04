@@ -1,5 +1,9 @@
 # TimelineView
 [![](https://jitpack.io/v/lriccardo/TimelineView.svg)](https://jitpack.io/#lriccardo/TimelineView)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TimelineView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/8268)
+[![AndroidWeekly](https://androidweekly.net/issues/issue-498/badge)](https://androidweekly.net/issues/issue-498) 
 
 A customizable and easy-to-use Timeline View library for Android
 
@@ -22,7 +26,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.lriccardo:TimelineView:1.0.4'
+    implementation 'com.github.lriccardo:TimelineView:1.0.6'
 }
 ```
 
