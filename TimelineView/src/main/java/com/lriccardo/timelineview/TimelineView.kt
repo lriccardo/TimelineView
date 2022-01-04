@@ -3,6 +3,7 @@ package com.lriccardo.timelineview
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -35,7 +36,10 @@ class TimelineView @JvmOverloads constructor(
 
     var viewType = ViewType.FIRST
 
+    var indicatorDrawable: Drawable?
+
     var indicatorSize: Float = 12.toPx().toFloat()
+
     @ColorInt
     var indicatorColor: Int = Color.RED
         set(value) {
@@ -111,7 +115,12 @@ class TimelineView @JvmOverloads constructor(
         ).apply {
             try {
                 viewType =
-                    ViewType.values()[getInteger(R.styleable.TimelineView_timeline_item_type, viewType.ordinal)]
+                    ViewType.values()[getInteger(
+                        R.styleable.TimelineView_timeline_item_type,
+                        viewType.ordinal
+                    )]
+
+                indicatorDrawable = getDrawable(R.styleable.TimelineView_indicator_drawable)
 
                 indicatorSize = getDimensionPixelSize(
                     R.styleable.TimelineView_indicator_size,
@@ -209,6 +218,7 @@ class TimelineView @JvmOverloads constructor(
             strokeWidth = lineWidth
         }
     }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val size = when(indicatorStyle){
@@ -225,94 +235,104 @@ class TimelineView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val lineX = (width / 2).toFloat()
-
-        var topLineYStart: Float
-        var topLineYEnd: Float
-
-        var bottomLineYStart: Float
-        var bottomLineYEnd: Float
-
         val indicatorCenterX = (width / 2).toFloat()
         val indicatorCenterY =
             (height * indicatorYPosition).coerceIn(indicatorSize, height - indicatorSize)
 
-        var drawIndicator = true
-        var drawTopLine = false
-        var drawBottomLine = false
+        var lineX = (width / 2).toFloat()
 
-        when (viewType) {
-            ViewType.FIRST -> {
-                drawTopLine = false
-                drawBottomLine = true
-                drawIndicator = true
-            }
-            ViewType.MIDDLE -> {
-                drawTopLine = true
-                drawBottomLine = true
-                drawIndicator = true
-            }
-            ViewType.LAST -> {
-                drawTopLine = true
-                drawBottomLine = false
-                drawIndicator = true
-            }
-            ViewType.SPACER -> {
-                drawTopLine = true
-                drawBottomLine = true
-                drawIndicator = false
-            }
-        }
+        var topLineYStart = 0f
+        var topLineYEnd: Float = indicatorCenterY
 
-        topLineYStart = 0f
+        val bottomLineYStart = height.toFloat()
+        var bottomLineYEnd = indicatorCenterY
+
+        // The top line should start with a gap, so we start drawing below 'lineDashGap'
         if (lineStyle == LineStyle.Dashed && (indicatorCenterY - indicatorSize) > lineDashGap)
             topLineYStart += lineDashGap
 
+        val drawIndicator = viewType != ViewType.SPACER
+        val drawTopLine = viewType != ViewType.FIRST
+        val drawBottomLine = viewType != ViewType.LAST
 
-        bottomLineYStart = height.toFloat()
-        if(drawIndicator) {
-            topLineYEnd =
-                (indicatorCenterY - indicatorSize - linePadding).coerceAtLeast(topLineYStart)
-            bottomLineYEnd =
-                (indicatorCenterY + indicatorSize + linePadding).coerceAtMost(bottomLineYStart)
+        if (drawIndicator) {
+            if (indicatorDrawable != null) {
+                drawDrawableIndicator(indicatorCenterX, indicatorCenterY, canvas)
+
+                indicatorDrawable?.bounds?.let {
+                    topLineYEnd =
+                        (it.top - linePadding).coerceAtLeast(topLineYStart)
+                    bottomLineYEnd =
+                        (it.bottom + linePadding).coerceAtMost(bottomLineYStart)
+                    lineX = it.centerX().toFloat()
+                }
+            } else {
+                drawCircleIndicator(canvas, indicatorCenterX, indicatorCenterY)
+
+                topLineYEnd =
+                    (indicatorCenterY - indicatorSize - linePadding).coerceAtLeast(topLineYStart)
+                bottomLineYEnd =
+                    (indicatorCenterY + indicatorSize + linePadding).coerceAtMost(bottomLineYStart)
+            }
         } else {
             topLineYEnd = indicatorCenterY
             bottomLineYEnd = indicatorCenterY
         }
 
-        if(drawTopLine) {
+        if (drawTopLine) {
             canvas.drawLine(lineX, topLineYStart, lineX, topLineYEnd, linePaint)
         }
-        if(drawBottomLine){
+
+        if (drawBottomLine) {
             canvas.drawLine(lineX, bottomLineYStart, lineX, bottomLineYEnd, linePaint)
         }
+    }
 
-        if (drawIndicator) {
-            if (indicatorStyle == IndicatorStyle.Checked) {
+    private fun drawCircleIndicator(
+        canvas: Canvas,
+        indicatorCenterX: Float,
+        indicatorCenterY: Float
+    ) {
+        if (indicatorStyle == IndicatorStyle.Checked) {
+            // Outer circle
+            canvas.drawCircle(
+                indicatorCenterX,
+                indicatorCenterY,
+                indicatorSize,
+                indicatorPaint
+            )
+
+            // Inner circle
+            checkedIndicatorPaint?.let {
+                it.color = indicatorColor
                 canvas.drawCircle(
                     indicatorCenterX,
                     indicatorCenterY,
-                    indicatorSize,
-                    indicatorPaint
-                )
-                checkedIndicatorPaint?.let {
-                    it.color = indicatorColor
-                    canvas.drawCircle(
-                        indicatorCenterX,
-                        indicatorCenterY,
-                        checkedIndicatorSize,
-                        it
-                    )
-                }
-            } else {
-                canvas.drawCircle(
-                    indicatorCenterX,
-                    indicatorCenterY,
-                    indicatorSize,
-                    indicatorPaint
+                    checkedIndicatorSize,
+                    it
                 )
             }
+        } else {
+            canvas.drawCircle(
+                indicatorCenterX,
+                indicatorCenterY,
+                indicatorSize,
+                indicatorPaint
+            )
         }
+    }
+
+    private fun drawDrawableIndicator(
+        indicatorCenterX: Float,
+        indicatorCenterY: Float,
+        canvas: Canvas
+    ) {
+        val left = (indicatorCenterX - indicatorSize).toInt()
+        val top = (indicatorCenterY - indicatorSize).toInt()
+        val right = (indicatorCenterX + indicatorSize).toInt()
+        val bottom = (indicatorCenterY + indicatorSize).toInt()
+        indicatorDrawable?.setBounds(left, top, right, bottom)
+        indicatorDrawable?.draw(canvas)
     }
 
     fun setType(position: Int, totalItems: Int) {
