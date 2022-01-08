@@ -1,5 +1,9 @@
 # TimelineView
 [![](https://jitpack.io/v/lriccardo/TimelineView.svg)](https://jitpack.io/#lriccardo/TimelineView)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TimelineView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/8268)
+[![AndroidWeekly](https://androidweekly.net/issues/issue-498/badge)](https://androidweekly.net/issues/issue-498) 
 
 A customizable and easy-to-use Timeline View library for Android
 
@@ -22,7 +26,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.lriccardo:TimelineView:1.0.4'
+    implementation 'com.github.lriccardo:TimelineView:1.0.6'
 }
 ```
 
@@ -80,6 +84,11 @@ dependencies {
             <td>app:indicator_style</td>
             <td>filled | empty | checked</td>
             <td>filled</td>
+        </tr>
+        <tr>
+            <td>app:indicator_drawable</td>
+            <td>Drawable reference</td>
+            <td>null</td>
         </tr>
         <tr>
             <td>app:indicator_size</td>
@@ -151,6 +160,10 @@ recyclerView.addItemDecoration(
 
 - Customization
 
+    You can provide a custom drawable for the indicators using `indicatorDrawable` or `indicatorDrawableRes` (`indicatorDrawable` overrides `indicatorDrawableRes`), if both are `null` a circle will be drawn (using the other customization parameters).
+
+    If you pass a drawable reference (`indicatorDrawableRes`), `ContextCompat.getDrawable()` will be used internally.
+    
     <table>
         <th>Field</th>
         <th>Accepted values</th>
@@ -159,6 +172,16 @@ recyclerView.addItemDecoration(
             <td>indicatorStyle</td>
             <td>IndicatorStyle (Filled | Empty | Checked)</td>
             <td>Filled</td>
+        </tr>
+        <tr>
+            <td>indicatorDrawable</td>
+            <td>Drawable</td>
+            <td>null</td>
+        </tr>
+        <tr>
+            <td>indicatorDrawableRes</td>
+            <td>@DrawableRes Int</td>
+            <td>null</td>
         </tr>
         <tr>
             <td>indicatorSize</td>
@@ -231,10 +254,12 @@ recyclerView.addItemDecoration(
 - Advanced customization
     
     If your `RecyclerView.Adapter` implements `TimelineAdapter` you can customize how each item of your list is drawn.
-    Implementing one or all of these methods, allows you to use the `position` argument to return a different customization for some of your items.
+    Implementing one or more of these methods, allows you to use the `position` argument to return a different customization for some of your items.
     ```kotlin
     interface TimelineAdapter {
         fun getTimelineViewType(position: Int): TimelineView.ViewType?
+        fun getIndicatorDrawable(position: Int): Drawable?
+        @DrawableRes fun getIndicatorDrawableRes(position: Int): Int?
         fun getIndicatorStyle(position: Int): TimelineView.IndicatorStyle?
         fun getIndicatorColor(position: Int): Int?
         fun getLineColor(position: Int): Int?
