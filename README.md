@@ -3,13 +3,43 @@
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TimelineView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/8268)
-[![AndroidWeekly](https://androidweekly.net/issues/issue-498/badge)](https://androidweekly.net/issues/issue-498) 
+[![AndroidWeekly](https://androidweekly.net/issues/issue-498/badge)](https://androidweekly.net/issues/issue-498)
 
 A customizable and easy-to-use Timeline View library for Android
 
 Can be used as a standalone view or as a RecyclerView decorator
 
 ![header](https://raw.githubusercontent.com/lriccardo/TimelineView/main/screens/header.png)
+
+## Previews
+
+<table>
+    <th>Automatically adapts to the item height and supports expand animations</th>
+    <th>View type</th>
+    <th>Preview</th>
+    <th>View type</th>
+    <th>Preview</th>
+    <th>View type</th>
+    <th>Preview</th>
+    <tr>
+        <td align="center" rowspan="2"><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/expand.gif" alt="expand" width="250"/></td>
+        <td>first</td>
+        <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/first.jpg" alt="first" width="200"/></td>
+        <td>middle</td>
+        <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/middle.jpg" alt="middle" width="200"/></td>
+        <td>checked</td>
+        <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/middle_checked.jpg" alt="checked" width="200"/></td>
+    </tr>
+    <tr>
+        <td>last</td>
+        <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/last.jpg" alt="last" width="200"/></td>
+        <td>spacer</td>
+        <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/spacer.jpg" alt="spacer" width="200"/></td>
+        <td>dashed</td>
+        <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/middle_dashed.jpg" alt="dashed" width="200"/></td>
+    </tr>
+</table>
+
 ## Setup
 
 ### 1. Add Jitpack to your root build.gradle
@@ -26,123 +56,11 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.lriccardo:TimelineView:1.0.6'
+    implementation 'com.github.lriccardo:TimelineView:1.1.0'
 }
 ```
 
 ## Usage
-
-### Standalone view
-```xml
-<com.lriccardo.timelineview.TimelineView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    app:timeline_item_type="first"
-    app:indicator_size="12dp"
-    app:line_width="8dp"
-    app:indicator_color="@color/teal_700"
-    app:line_color="@color/teal_700" />
-```
-- Previews
-    <table>
-        <th>View type</th>
-        <th>Preview</th>        
-        <th>View type</th>
-        <th>Preview</th>        
-        <th>View type</th>
-        <th>Preview</th>
-        <tr>
-            <td>first</td>
-            <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/first.jpg" alt="first" width="200"/></td>
-            <td>middle</td>
-            <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/middle.jpg" alt="middle" width="200"/></td>
-            <td>checked</td>
-            <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/middle_checked.jpg" alt="checked" width="200"/></td>
-        </tr>
-        <tr>
-            <td>last</td>
-            <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/last.jpg" alt="last" width="200"/></td>
-            <td>spacer</td>
-            <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/spacer.jpg" alt="spacer" width="200"/></td>
-            <td>dashed</td>
-            <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/middle_dashed.jpg" alt="dashed" width="200"/></td>
-        </tr>
-    </table>
-    
-- Customization
-
-    <table>
-        <th>Attribute</th>
-        <th>Accepted values</th>
-        <th>Default</th>
-        <tr>
-            <td>app:timeline_item_type</td>
-            <td>first | middle | last | spacer</td>
-            <td>first</td>
-        </tr>
-        <tr>
-            <td>app:indicator_style</td>
-            <td>filled | empty | checked</td>
-            <td>filled</td>
-        </tr>
-        <tr>
-            <td>app:indicator_drawable</td>
-            <td>Drawable reference</td>
-            <td>null</td>
-        </tr>
-        <tr>
-            <td>app:indicator_size</td>
-            <td>Dimension</td>
-            <td>12dp</td>
-        </tr>
-        </tr>
-        <tr>
-            <td>app:indicator_color</td>
-            <td>Color</td>
-            <td>Color.RED</td>
-        </tr>
-        <tr>
-             <td>app:indicator_y_position</td>
-             <td>Percentage (0.0 - 1.0)</td>
-             <td>0.5f</td>
-        </tr>
-        <tr>
-            <td>app:checked_indicator_size</td>
-            <td>Dimension</td>
-            <td>6dp</td>
-        </tr>
-        <tr>
-            <td>app:checked_indicator_stroke_width</td>
-            <td>Dimension</td>
-            <td>4dp</td>
-        </tr>
-        <tr>
-            <td>app:line_style</td>
-            <td>normal | dashed</td>
-            <td>normal</td>
-        </tr>
-        <tr>
-            <td>app:line_width</td>
-            <td>Dimension</td>
-            <td>8dp</td>
-        </tr>
-        </tr>
-            <tr>
-            <td>app:line_color</td>
-            <td>Color</td>
-            <td>Color.RED</td>
-        </tr>
-        <tr>
-            <td>app:line_dash_length</td>
-            <td>Dimension</td>
-            <td>18</td>
-        </tr>
-        <tr>
-            <td>app:line_dash_gap</td>
-            <td>Dimension</td>
-            <td>12</td>
-        </tr>
-    </table>
 
 ### RecyclerView Decorator
 ```kotlin
@@ -163,7 +81,7 @@ recyclerView.addItemDecoration(
     You can provide a custom drawable for the indicators using `indicatorDrawable` or `indicatorDrawableRes` (`indicatorDrawable` overrides `indicatorDrawableRes`), if both are `null` a circle will be drawn (using the other customization parameters).
 
     If you pass a drawable reference (`indicatorDrawableRes`), `ContextCompat.getDrawable()` will be used internally.
-    
+
     <table>
         <th>Field</th>
         <th>Accepted values</th>
@@ -231,7 +149,7 @@ recyclerView.addItemDecoration(
         <tr>
             <td>padding</td>
             <td>Float</td>
-            <td>16dp/td>
+            <td>16dp</td>
         </tr>
         <tr>
             <td>position</td>
@@ -267,3 +185,84 @@ recyclerView.addItemDecoration(
         fun getLinePadding(position: Int): Float?
     }
     ```
+### Standalone view
+```xml
+<com.lriccardo.timelineview.TimelineView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    app:timeline_item_type="first"
+    app:indicator_size="12dp"
+    app:line_width="8dp"
+    app:indicator_color="@color/teal_700"
+    app:line_color="@color/teal_700" />
+```
+
+- Customization
+
+    <table>
+        <th>Attribute</th>
+        <th>Accepted values</th>
+        <th>Default</th>
+        <tr>
+            <td>app:timeline_item_type</td>
+            <td>first | middle | last | spacer</td>
+            <td>first</td>
+        </tr>
+        <tr>
+            <td>app:indicator_style</td>
+            <td>filled | empty | checked</td>
+            <td>filled</td>
+        </tr>
+        <tr>
+            <td>app:indicator_size</td>
+            <td>Dimension</td>
+            <td>12dp</td>
+        </tr>
+        </tr>
+        <tr>
+            <td>app:indicator_color</td>
+            <td>Color</td>
+            <td>Color.RED</td>
+        </tr>
+        <tr>
+             <td>app:indicator_y_position</td>
+             <td>Percentage (0.0 - 1.0)</td>
+             <td>0.5f</td>
+        </tr>
+        <tr>
+            <td>app:checked_indicator_size</td>
+            <td>Dimension</td>
+            <td>6dp</td>
+        </tr>
+        <tr>
+            <td>app:checked_indicator_stroke_width</td>
+            <td>Dimension</td>
+            <td>4dp</td>
+        </tr>
+        <tr>
+            <td>app:line_style</td>
+            <td>normal | dashed</td>
+            <td>normal</td>
+        </tr>
+        <tr>
+            <td>app:line_width</td>
+            <td>Dimension</td>
+            <td>8dp</td>
+        </tr>
+        </tr>
+            <tr>
+            <td>app:line_color</td>
+            <td>Color</td>
+            <td>Color.RED</td>
+        </tr>
+        <tr>
+            <td>app:line_dash_length</td>
+            <td>Dimension</td>
+            <td>18</td>
+        </tr>
+        <tr>
+            <td>app:line_dash_gap</td>
+            <td>Dimension</td>
+            <td>12</td>
+        </tr>
+    </table>
