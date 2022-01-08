@@ -22,7 +22,7 @@ Can be used as a standalone view or as a RecyclerView decorator
     <th>View type</th>
     <th>Preview</th>
     <tr>
-        <td align="center" rowspan="2"><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/expand.gif" alt="expand" width="250"/></td>
+        <td align="center" rowspan="2"><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/demo.gif" alt="expand" width="250"/></td>
         <td>first</td>
         <td><img src="https://github.com/lriccardo/TimelineView/raw/main/screens/first.jpg" alt="first" width="200"/></td>
         <td>middle</td>
