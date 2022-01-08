@@ -214,6 +214,11 @@ recyclerView.addItemDecoration(
             <td>filled</td>
         </tr>
         <tr>
+            <td>app:indicator_drawable</td>
+            <td>Drawable</td>
+            <td>null</td>
+        </tr>
+        <tr>
             <td>app:indicator_size</td>
             <td>Dimension</td>
             <td>12dp</td>
