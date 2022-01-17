@@ -64,7 +64,8 @@ class TimelineDecorator(
                 return
 
             val timelineView = TimelineView(context = parent.context)
-            (parent.adapter as? TimelineAdapter)?.run {
+
+            (parent.adapter as? TimelineAdapter ?: object : TimelineAdapter {}).run {
                 getTimelineViewType(itemPosition)?.let {
                     timelineView.viewType = it
                 } ?: timelineView.setType(itemPosition, parent.adapter?.itemCount ?: -1)
