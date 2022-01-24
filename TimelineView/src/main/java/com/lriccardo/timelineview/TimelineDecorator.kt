@@ -58,91 +58,100 @@ class TimelineDecorator(
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         c.save()
-        c.clipRect(parent.paddingLeft, parent.paddingTop, parent.width, parent.height-parent.paddingBottom)
+        c.clipRect(
+            parent.paddingLeft,
+            parent.paddingTop,
+            parent.width,
+            parent.height - parent.paddingBottom
+        )
 
-        parent.children.forEach {
-            val itemPosition = parent.getChildAdapterPosition(it)
+        (parent.adapter as? TimelineAdapter).let { adapter ->
+            parent.children.forEach {
+                val itemPosition = parent.getChildAdapterPosition(it)
 
-            if (itemPosition == RecyclerView.NO_POSITION)
-                return
+                if (itemPosition == RecyclerView.NO_POSITION)
+                    return
 
-            val timelineView = TimelineView(context = parent.context)
+                val timelineView = TimelineView(context = parent.context)
 
-            (parent.adapter as? TimelineAdapter ?: object : TimelineAdapter {}).run {
-                getTimelineViewType(itemPosition)?.let {
+                adapter?.getTimelineViewType(itemPosition)?.let {
                     timelineView.viewType = it
                 } ?: timelineView.setType(itemPosition, parent.adapter?.itemCount ?: -1)
 
-                (getIndicatorDrawable(itemPosition) ?: indicatorDrawable)?.let {
+                (adapter?.getIndicatorDrawable(itemPosition) ?: indicatorDrawable)?.let {
                     timelineView.indicatorDrawable = it
-                } ?: (getIndicatorDrawableRes(itemPosition) ?: indicatorDrawableRes)?.let {
+                } ?: (adapter?.getIndicatorDrawableRes(itemPosition) ?: indicatorDrawableRes)?.let {
                     timelineView.indicatorDrawable = ContextCompat.getDrawable(parent.context, it)
                 }
 
-                (getIndicatorColor(itemPosition) ?: indicatorColor)?.let {
+                (adapter?.getIndicatorColor(itemPosition) ?: indicatorColor)?.let {
                     timelineView.indicatorColor = it
                 }
 
-                (getLineColor(itemPosition) ?: lineColor)?.let {
+                (adapter?.getLineColor(itemPosition) ?: lineColor)?.let {
                     timelineView.lineColor = it
                 }
 
-                (getIndicatorStyle(itemPosition) ?: indicatorStyle)?.let {
+                (adapter?.getIndicatorStyle(itemPosition) ?: indicatorStyle)?.let {
                     timelineView.indicatorStyle = it
                 }
 
-                (getLineStyle(itemPosition) ?: lineStyle)?.let {
+                (adapter?.getLineStyle(itemPosition) ?: lineStyle)?.let {
                     timelineView.lineStyle = it
                 }
 
-                (getLinePadding(itemPosition) ?: linePadding)?.let {
+                (adapter?.getLinePadding(itemPosition) ?: linePadding)?.let {
                     timelineView.linePadding = it
                 }
-            }
 
-            timelineView.indicatorSize = indicatorSize
+                timelineView.indicatorSize = indicatorSize
 
-            timelineView.indicatorYPosition = indicatorYPosition
+                timelineView.indicatorYPosition = indicatorYPosition
 
-            checkedIndicatorSize?.let {
-                timelineView.checkedIndicatorSize = it
-            }
-
-            checkedIndicatorStrokeWidth.let {
-                timelineView.checkedIndicatorStrokeWidth = it
-            }
-
-            lineDashLength?.let {
-                timelineView.lineDashLength = it
-            }
-
-            lineDashGap?.let {
-                timelineView.lineDashGap = it
-            }
-
-            lineWidth?.let {
-                timelineView.lineWidth = it
-            }
-
-            timelineView.measure(
-                View.MeasureSpec.getSize(width.toInt()),
-                View.MeasureSpec.getSize(it.measuredHeight)
-            )
-
-            c.save()
-            when (position) {
-                Position.Left -> {
-                    c.translate(padding+parent.paddingLeft, it.top.toFloat())
-                    timelineView.layout(0, 0, timelineView.measuredWidth, it.measuredHeight)
+                checkedIndicatorSize?.let {
+                    timelineView.checkedIndicatorSize = it
                 }
-                Position.Right -> {
-                    c.translate(it.measuredWidth + padding + parent.paddingLeft, it.top.toFloat())
-                    timelineView.layout(0, 0, timelineView.measuredWidth, it.measuredHeight)
+
+                checkedIndicatorStrokeWidth.let {
+                    timelineView.checkedIndicatorStrokeWidth = it
                 }
+
+                lineDashLength?.let {
+                    timelineView.lineDashLength = it
+                }
+
+                lineDashGap?.let {
+                    timelineView.lineDashGap = it
+                }
+
+                lineWidth?.let {
+                    timelineView.lineWidth = it
+                }
+
+                timelineView.measure(
+                    View.MeasureSpec.getSize(width.toInt()),
+                    View.MeasureSpec.getSize(it.measuredHeight)
+                )
+
+                c.save()
+                when (position) {
+                    Position.Left -> {
+                        c.translate(padding + parent.paddingLeft, it.top.toFloat())
+                        timelineView.layout(0, 0, timelineView.measuredWidth, it.measuredHeight)
+                    }
+                    Position.Right -> {
+                        c.translate(
+                            it.measuredWidth + padding + parent.paddingLeft,
+                            it.top.toFloat()
+                        )
+                        timelineView.layout(0, 0, timelineView.measuredWidth, it.measuredHeight)
+                    }
+                }
+                timelineView.draw(c)
+                c.restore()
             }
-            timelineView.draw(c)
-            c.restore()
         }
+
         c.restore()
     }
 }
