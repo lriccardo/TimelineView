@@ -57,6 +57,9 @@ class TimelineDecorator(
     }
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        c.save()
+        c.clipRect(parent.paddingLeft, parent.paddingTop, parent.width, parent.height-parent.paddingBottom)
+
         parent.children.forEach {
             val itemPosition = parent.getChildAdapterPosition(it)
 
@@ -64,7 +67,8 @@ class TimelineDecorator(
                 return
 
             val timelineView = TimelineView(context = parent.context)
-            (parent.adapter as? TimelineAdapter)?.run {
+
+            (parent.adapter as? TimelineAdapter ?: object : TimelineAdapter {}).run {
                 getTimelineViewType(itemPosition)?.let {
                     timelineView.viewType = it
                 } ?: timelineView.setType(itemPosition, parent.adapter?.itemCount ?: -1)
@@ -95,6 +99,7 @@ class TimelineDecorator(
                     timelineView.linePadding = it
                 }
             }
+
             timelineView.indicatorSize = indicatorSize
 
             timelineView.indicatorYPosition = indicatorYPosition
@@ -127,16 +132,17 @@ class TimelineDecorator(
             c.save()
             when (position) {
                 Position.Left -> {
-                    c.translate(padding, it.top.toFloat())
+                    c.translate(padding+parent.paddingLeft, it.top.toFloat())
                     timelineView.layout(0, 0, timelineView.measuredWidth, it.measuredHeight)
                 }
                 Position.Right -> {
-                    c.translate(it.measuredWidth + padding, it.top.toFloat())
+                    c.translate(it.measuredWidth + padding + parent.paddingLeft, it.top.toFloat())
                     timelineView.layout(0, 0, timelineView.measuredWidth, it.measuredHeight)
                 }
             }
             timelineView.draw(c)
             c.restore()
         }
+        c.restore()
     }
 }
